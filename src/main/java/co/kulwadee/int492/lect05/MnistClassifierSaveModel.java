@@ -47,10 +47,10 @@ public class MnistClassifierSaveModel {
         int channels = 1;
         int rngseed = 123;
         Random randNumGen = new Random(rngseed);
-        int batchSize = 128;
+        int batchSize = 100;
         int outputNum = 10;
-        int numEpochs = 25;
-        int numHidden = 64;
+        int numEpochs = 5;
+        int numHidden = 128;
 
         // download the MNIST data and store it in ~/mnist_png/training
         downloadData();
@@ -89,21 +89,26 @@ public class MnistClassifierSaveModel {
                 .list()
                 .layer(0, new DenseLayer.Builder()
                         .nIn(height * width)
-                        .nOut(height * width)
-                        .activation(Activation.RELU)
+                        .nOut(numHidden)
+                        .activation(Activation.TANH)
                         .build())
                 .layer(1, new DenseLayer.Builder()
-                        .nIn(height * width)
-                        .nOut(500)
-                        .activation(Activation.RELU)
+                        .nIn(numHidden)
+                        .nOut(numHidden)
+                        .activation(Activation.TANH)
                         .build())
                 .layer(2, new DenseLayer.Builder()
-                        .nIn(500)
-                        .nOut(300)
-                        .activation(Activation.RELU)
+                        .nIn(numHidden)
+                        .nOut(numHidden)
+                        .activation(Activation.TANH)
                         .build())
-                .layer(3, new OutputLayer.Builder(LossFunctions.LossFunction.NEGATIVELOGLIKELIHOOD)
-                        .nIn(300)
+                .layer(3, new DenseLayer.Builder()
+                        .nIn(numHidden)
+                        .nOut(numHidden)
+                        .activation(Activation.TANH)
+                        .build())
+                .layer(4, new OutputLayer.Builder(LossFunctions.LossFunction.NEGATIVELOGLIKELIHOOD)
+                        .nIn(numHidden)
                         .nOut(outputNum)
                         .activation(Activation.SOFTMAX)
                         .build())
