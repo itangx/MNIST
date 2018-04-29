@@ -85,7 +85,7 @@ public class MnistClassifierSaveModel {
                 .seed(rngseed)
                 .optimizationAlgo(OptimizationAlgorithm.STOCHASTIC_GRADIENT_DESCENT)
                 .iterations(1)
-                .learningRate(0.6)
+                .learningRate(0.1)
                 .list()
                 .layer(0, new DenseLayer.Builder()
                         .nIn(height * width)
